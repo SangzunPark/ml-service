@@ -15,5 +15,9 @@ jobs:
           pip install pytest ruff
       - name: Lint
         run: ruff check .
+
+      - name: Train model
+        run: python src/train.py    
+
       - name: Tests
         run: pytest -q
