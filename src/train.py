@@ -28,8 +28,14 @@ def main():
     print("Accuracy", accuracy_score(y_test, preds))
 
     root = Path(__file__).resolve().parents[1]
-    model_path = root / "models" / "model.pkl"
+
+    model_dir = root / "models"
+    model_dir.mkdir(parents=True, exist_ok=True)
+    # models 폴더가 없는 CI 문제를 해결하기 위해     
+    model_path = model_dir / "model.pkl"
     joblib.dump(model, model_path)
+
+
     print("Model saved to:", model_path)
 
 if __name__ == "__main__":
