@@ -33,6 +33,9 @@ def health():
 # health 함수를 FastAPI 서버에 /health 경로의 GET 요청 처리기로 등록
 # 메서드 GET은 조회이며 상태확인, 데이터 조회에 사용
 # 메서드 POST 는 생성/계산이며, 예측요청 데이터 제출에 사용
+# 엔드포인트는 외부에서 이 기능을 쓰려면 여기로 요청해라 라고 정해놓은 주소 /health, /docs, /predict 등
+# HTTP 매서드 와 경로(path)가 한세트 ex: GET /health
+# 다른 말로는 요청(request) 가 도착해서 실제 로직이 실행되는 끝 지점
 
 @app.post("/predict", response_model=PredictResponse)
 # response_model은 FastAPI에게 응답형식선언, 자동검증, 자동문서화(/docs), 보안 등의 역할을 한다. 

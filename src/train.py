@@ -31,7 +31,8 @@ def main():
 
     model_dir = root / "models"
     model_dir.mkdir(parents=True, exist_ok=True)
-    # models 폴더가 없는 CI 문제를 해결하기 위해     
+    # models 폴더가 없는 CI 문제를 해결하기 위해 parents =True 는 상위 폴더가 없으면 전부 만들라는 뜻
+    # exist_ok=Ture 는 이미 폴더가 있다면 그냥 사용    
     model_path = model_dir / "model.pkl"
     joblib.dump(model, model_path)
 
