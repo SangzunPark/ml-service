@@ -1,5 +1,5 @@
 from pathlib import Path
-import pandas as pd
+# import pandas as pd
 from sklearn.datasets import load_breast_cancer
 
 # 메모리 안에 있던 raw를 파일로 고정하는 단계

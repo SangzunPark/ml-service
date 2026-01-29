@@ -2,7 +2,7 @@ from pathlib import Path
 import joblib
 import numpy as np
 
-from sklearn.datasets import load_breast_cancer
+# from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -45,4 +45,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
