@@ -1,4 +1,14 @@
+# virtual env
 .venv/
+
+# python cache
 __pycache__/
 *.pyc
-models/model.pkl
+
+# data artifacts
+data/raw/*
+data/processed/*
+data/features/*
+
+# models
+models/*.pkl
