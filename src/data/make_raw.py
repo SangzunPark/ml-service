@@ -1,5 +1,4 @@
 from sklearn.datasets import load_breast_cancer
-import pandas as pd
 from src.config import load_config, project_root
 
 # 메모리 안에 있던 raw를 파일로 고정하고 경로를 config.yml이 통제하도록 하는 과정
