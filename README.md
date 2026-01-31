@@ -4,10 +4,10 @@
 pip install -r requirements.txt
 
 ### Train
-python src/train.py
+python -m src.train
 
 ### Predict
-python src/test_predict.py
+python -m src.test_predict
 
 ### Run API
 uvicorn src.api:app --reload
@@ -27,8 +27,8 @@ docker run -p 8000:8000 ml-service
 
 raw -> processed -> features -> model
 
-## Steps
-1. python src/data/make_raw.py
-2. python src/data/preprocess.py
-3. python src/data/make_features.py
-4. python src/train.py
+## Steps (-m for package run)
+1. python -m src.data.make_raw
+2. python -m src.data.preprocess
+3. python -m src.data.make_features
+4. python -m src.train

@@ -1,14 +1,12 @@
+from pathlib import Path
 import pandas as pd
-from src.config import load_config, project_root
 
 def main():
-    cfg = load_config()
-    root = project_root()
+    root = Path(__file__).resolve().parents[2]
+    raw_path = root / "data" / "raw" / "breast_cancer_raw.csv"
+    out_path = root / "data" / "processed" / "breast_cancer_processed.csv"
 
-    in_path = root / cfg["data"]["raw_path"]
-    out_path = root / cfg["data"]["processed_path"]
-
-    df = pd.read_csv(in_path)
+    df = pd.read_csv(raw_path)
 
     # 이 데이터에서는 이러한 전처리가 큰 의미는 없지만 구조를 만드는 것이 목적
     df = df.drop_duplicates()

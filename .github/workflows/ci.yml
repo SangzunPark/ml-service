@@ -20,12 +20,12 @@ jobs:
 
       - name: Build data pipeline artifacts
         run: |
-          python src/data/make_raw.py
-          python src/data/preprocess.py
-          python src/data/make_features.py  
+          python -m src.data.make_raw
+          python -m src.data.preprocess
+          python -m src.data.make_features
 
       - name: Train model
-        run: python src/train.py    
+        run: python -m src.train   
 
       - name: Tests
         run: pytest -q

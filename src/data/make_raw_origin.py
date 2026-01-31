@@ -1,15 +1,10 @@
+from pathlib import Path
+# import pandas as pd
 from sklearn.datasets import load_breast_cancer
-import pandas as pd
-from src.config import load_config, project_root
 
-# 메모리 안에 있던 raw를 파일로 고정하고 경로를 config.yml이 통제하도록 하는 과정
+# 메모리 안에 있던 raw를 파일로 고정하는 단계
 
 def main():
-    cfg = load_config()
-    root = project_root()
-
-    out_path = root / cfg["data"]["raw_path"]
-
     # 여기서 사용하는 데이터는 Bunch 객체라고 한다. 딕셔너리처럼 여러 값이 있고 data["frame"] 처럼 접근가능하고
     # data.frame 처럼 점 (.)으로도 접근 가능하다
     # as_frame=Ture 는 같은 데이터를 Numpy 배열로 받을지, pandas DataFrame으로 받을 지 정하는 스위치이며
@@ -20,9 +15,11 @@ def main():
     # X = data.data / y= data.target (data.target_names)
     df = data.frame
 
+    root = Path(__file__).resolve().parents[2]
+    out_path = root / "data" / "raw" / "breast_cancer_raw.csv"
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(out_path, index=False)
 
+    df.to_csv(out_path, index=False)
     print(f"Saved raw data to {out_path}")
 
 if __name__ =="__main__":

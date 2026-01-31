@@ -1,0 +1,18 @@
+# 이전 1~4주차 과정과 달리 5주차 부터는 코드가 아닌 설정(config/rnv)이 시스템을 제어하고, 로그와 버전으로 운영 서비스를 기록
+# 즉 이 파일이 single source of truth
+# 이 파일의 목적은 프로젝트에서 경로/버전 같은 바뀌기 쉬운 값을 코드에서 빼서 환경(로컬/CI/Docker)에 따라 쉽게 바꾸게 하는 것
+# 즉 코드 안에 data/raw/...와 같은 경로를 만들지 않아도 된다. 대신 YAML에 모아두고 코드에서는 load_config()를 읽는다
+# 이 설정이 없으면 로컬에서는 되는데 CI/Docker 에서는 경로가 달라서 깨짐
+# 모델 파일명만 바꾸고 싶은데 여러 파일을 수정해야 함, 지금 어떤 모델을 서빙 중인지 추적이 어려움
+
+# cfg["data"]
+data:
+  raw_path: data/raw/breast_cancer_raw.csv
+  processed_path: data/processed/breast_cancer_processed.csv
+  features_dir: data/features
+
+# cfg["model"]
+model:
+  path: models/model.pkl
+  version: "0.5.0"
+
