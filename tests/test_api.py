@@ -17,7 +17,7 @@ def test_health_ok():
     assert body["status"] == "ok"
     # r.json 이란 응답 body(JSON)를 Python 자료구조로 바꿔준다는 의미 서버의 응답예시는 {"prediction": 1}
 
-    assert "model_Version" in body
+    assert "model_version" in body
     # isinstance(x,str) 은 x가 str타입인지 확인해 주는 함수
     assert isinstance(body["model_version"], str)
     # 모델버전값이 빈 문자열이 아니어야 한다는 뜻 True 면 통과
@@ -35,9 +35,9 @@ def test_predict_ok():
     assert r.status_code == 200
 
     body = r.json()
-    assert body()["prediction"] in [0, 1]
+    assert body["prediction"] in [0, 1]
 
-    assert "model_Version" in body
+    assert "model_version" in body
     assert isinstance(body["model_version"], str)
     assert body["model_version"] != ""
 
