@@ -32,3 +32,13 @@ raw -> processed -> features -> model
 2. python -m src.data.preprocess
 3. python -m src.data.make_features
 4. python -m src.train
+
+## Configuration
+add CONFIG_PATH for control setting
+
+## Logging 
+LOG_LEVEL=INFO|DEBUG
+/predict latancy log
+
+### Model Version
+add model_version at response

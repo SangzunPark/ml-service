@@ -9,12 +9,20 @@ from sklearn.datasets import load_breast_cancer
 client = TestClient(app)
 
 def test_health_ok():
-    r = client.get("health")
+    r = client.get("/health")
     # assert는 이것이 참인지 확인하라
     assert r.status_code ==200
-    assert r.json()["status"] == "ok"
+
+    body = r.json()
+    assert body["status"] == "ok"
     # r.json 이란 응답 body(JSON)를 Python 자료구조로 바꿔준다는 의미 서버의 응답예시는 {"prediction": 1}
 
+    assert "model_Version" in body
+    # isinstance(x,str) 은 x가 str타입인지 확인해 주는 함수
+    assert isinstance(body["model_version"], str)
+    # 모델버전값이 빈 문자열이 아니어야 한다는 뜻 True 면 통과
+    assert body["model_version"] != ""
+    
 
 def test_predict_ok():
     data = load_breast_cancer()
@@ -25,5 +33,11 @@ def test_predict_ok():
 
     r = client.post("/predict", json={"features":sample})
     assert r.status_code == 200
-    assert r.json()["prediction"] in [0, 1]
+
+    body = r.json()
+    assert body()["prediction"] in [0, 1]
+
+    assert "model_Version" in body
+    assert isinstance(body["model_version"], str)
+    assert body["model_version"] != ""
 

@@ -1,38 +1,33 @@
 import time
-from typing import List
+import logging
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
+from typing import List
 
 from src.predict import predict
-from src.logging_setup import setup_logging
-from src.config import load_config
 
 
-logger = setup_logging()
+app = FastAPI(title="ML Service", version="0.2.0")
 
-cfg = load_config()
-# 문제가 생겼을때 파악하기 위해 모델 버전 확인도 추가
-MODEL_VERSION = cfg["model"]["version"]
+logging.basicConfig(level=logging.INFO)
+# INFO 이상 레빌의 로그만 출력하겠다 Debug / INFO / WARNING / ERROR / CRITICAL
+logger = logging.getLogger("ml-service")
+# 로그를 찍는 주체를 선언
 
-app = FastAPI(title="ML Service", version=MODEL_VERSION)
-
-
-# 위의 class가 함수가 아닌 이유는 행동이 아닌 모양검증이기 때문이고 pydantic의 BaseModel이 이것을 수행하며 이것이 FastAPI의 장점
-# 만약 def로 하려고 하면 검증 코드를 모두 작성해야 하기 때문에 FastAPI의 장점이 모두 사라짐
 class PredictRequest(BaseModel):
-    # 여기서 ""..." 는 필수값
     features: List[float] = Field(..., description="Length-30 feature vector")
 
 
 class PredictResponse(BaseModel):
     prediction: int
-    model_version: str
+# 위의 class가 함수가 아닌 이유는 행동이 아닌 모양검증이기 때문이고 pydantic의 BaseModel이 이것을 수행하며 이것이 FastAPI의 장점
+# 만약 def로 하려고 하면 검증 코드를 모두 작성해야 하기 때문에 FastAPI의 장점이 모두 사라짐
 
-# 이 서버가 살아있는지 health 체크
+
 @app.get("/health")
 def health():
-    return {"status": "ok", "model_version": MODEL_VERSION}
+    return {"status": "ok"}
 # URL로 부터 "/요청" 이 들어오면 이 함수를 실행하라
 # @은 파이썬의 데코레이터로, 아래에 정의된 함수를 약간 변형하거나 등록해라 라는 의미
 # health 함수를 FastAPI 서버에 /health 경로의 GET 요청 처리기로 등록
@@ -43,7 +38,6 @@ def health():
 # 다른 말로는 요청(request) 가 도착해서 실제 로직이 실행되는 끝 지점
 
 @app.post("/predict", response_model=PredictResponse)
-# @app.post는 /predict 입력이 들어오면 실해 -> req로 입력값 전달(req가 입력값 그 자체)
 # response_model은 FastAPI에게 응답형식선언, 자동검증, 자동문서화(/docs), 보안 등의 역할을 한다. 
 def do_predict(req: PredictRequest):
     # 파이썬 자체 문법으로 req는 변수이름, 뒷부분은 type hint
@@ -56,17 +50,14 @@ def do_predict(req: PredictRequest):
         # req는 요청이 들어올 때 FastAPI가 자동으로 생성하는 객체다
 
         # 처리시간 계산
-        # 1000을 곱하는 이유는 사람이 직관적으로 보기 쉽게 ms(밀리초) 단위로 변환
         elapsed_ms = (time.time() - start) * 1000
         # 성공 로그, 소수 2째 자리까지 / 로깅 전용 문자열 포맷, %는 값이 들어올 자리
         # logger.info("...", 값)
         logger.info("predict ok | latency_ms=%.2f", elapsed_ms)
 
-        return {"prediction": yhat, "model_version": MODEL_VERSION}
-    
+        return {"prediction": yhat}
     except Exception as e:
-        elapsed_ms = (time.time() - start) * 1000
-        # logger.error는 메시지만 남지만 exception은 스택트레이스(어디서, 어떤 경로로) 까지 남김
-        logger.exception("predict failed | latency_ms=%.2f | error=%s", elapsed_ms, str(e))
+        # 실패로그
+        logger.error("predict failed | error=%s", str(e))
         raise HTTPException(status_code=400, detail=str(e))
-    
+                            
