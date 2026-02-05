@@ -12,3 +12,6 @@ data/features/*
 
 # models
 models/*.pkl
+
+# .tar
+*.tar

@@ -13,7 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 내 프로젝트의 src폴더를 컨테이너 /app/src 로 복사
 # “현재는 데모용 목적으로 모델을 이미지에 포함했으며, 실제 환경에서는 S3 등 외부 스토리지에서 로드하도록 확장 가능하다”
 COPY src/ src/
-COPY models/ models/
+COPY config/ config/
+# COPY models/ models/
 
 # 포트 설정 메타 정보
 EXPOSE 8000
